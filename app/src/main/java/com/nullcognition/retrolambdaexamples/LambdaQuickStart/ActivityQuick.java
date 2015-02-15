@@ -29,6 +29,7 @@ public class ActivityQuick extends ActionBarActivity {
 		 Log.e("in C", "pressed in C");
 		 Toast.makeText(inView.getContext(), b.getText(), Toast.LENGTH_SHORT)
 			  .show();
+
 	  }
    }
 
@@ -51,7 +52,42 @@ public class ActivityQuick extends ActionBarActivity {
 			  .show();
 	  });
 
-//	  button1.setOnClickListener((View v) -> showT(v));
+	  button1.setOnClickListener((View v) -> showT(v));
 	  button2.setOnClickListener(C::showTinC);
+
+	  runOnUiThread(new Runnable() {
+
+		 @Override
+		 public void run(){
+			Log.e(getClass().getSimpleName(), "test");
+		 }
+	  });
+	  // vs
+	  runOnUiThread(() -> Log.e(getClass().getSimpleName(), "test"));
+
+	  try{
+		 if(false){
+			throw new NullPointerException();
+		 }
+		 else{
+			throw new InterruptedException();
+		 }
+	  }
+	  catch(NullPointerException | InterruptedException e){
+		 // Multiple exceptions work!
+		 Log.e("MainActivity", "Exception: ", e);
+	  }
+
+	  switch("string"){
+		 case "string":
+			break;
+		 case "not":
+			break;
+		 default:
+			Log.e("Switch 'string'", "Default parameter invalid");
+			throw new IllegalArgumentException();
+	  }
+
+
    }
 }
