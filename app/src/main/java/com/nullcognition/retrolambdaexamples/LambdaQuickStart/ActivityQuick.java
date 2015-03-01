@@ -13,13 +13,39 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
 
-public class ActivityQuick extends ActionBarActivity {
+interface Test {
+
+   default void doSomething(){
+	  Log.e(getClass().getSimpleName(), "test's default implementation");
+   }
+}
+
+interface Test1 {
+
+   default void doSomething(){
+	  Log.e(getClass().getSimpleName(), "test 1 's default implementation");
+
+   }
+
+   // if this is a problem with extended interfaces, walking up the inheritance tree, the closer interface's method is used
+}
+
+public class ActivityQuick extends ActionBarActivity implements Test {
+
+   @Override
+   public void doSomething(){
+	  Log.e(getClass().getSimpleName(), "activity overidden doSomething");
+	  // Test.super.doSomething(); // expilict method call used if class imlements two interfaces with the same implementation name
+   } // retro lambda does not support this, implementing an interface give you access to Test.super of the class
 
    @InjectView(R.id.button1)
    Button button1;
 
    @InjectView(R.id.button2)
    Button button2;
+
+   @InjectView(R.id.button3)
+   Button button3;
 
    static class C {
 
@@ -54,6 +80,11 @@ public class ActivityQuick extends ActionBarActivity {
 
 	  button1.setOnClickListener((View v) -> showT(v));
 	  button2.setOnClickListener(C::showTinC);
+
+	  button3.setOnClickListener((View v) -> {
+		 doSomething();
+	  this.getClass().getSimpleName();// will return of in the method scope
+	  }); // default method inheritance
 
 	  runOnUiThread(new Runnable() {
 
